@@ -76,9 +76,6 @@ int connector = connect(sockfd, (const struct sockaddr *)&serv_addr, sizeof(serv
 	exit(EXIT_FAILURE);
 	}
 
-	if((connector == 0) && (debug == 1)) { 
-	printf("DEBUG MSG - CONNECTOR(0) error ---> %s.\n", strerror(errno));
-	}
 		else {
 		printf("Made a connection to %s\n", inet_ntoa(serv_addr.sin_addr)); 
 		}
