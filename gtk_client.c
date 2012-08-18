@@ -138,6 +138,8 @@ gtk_container_add(GTK_CONTAINER(scrolledwindow), view);
 gtk_table_attach_defaults(GTK_TABLE(table), scrolledwindow, 1, 9, 2, 7);
 gtk_widget_show(scrolledwindow);
 
+
+//Start of conversion.
 view2 = gtk_text_view_new();
 buffer = gtk_text_view_get_buffer(GTK_TEXT_VIEW(view2));
 gtk_widget_show(view2);
