@@ -36,7 +36,14 @@ GtkWidget *filemenu;
 
 GtkTextBuffer *buffer;
 
-GdkColor color;
+//GdkColor color;
+
+gchar *utf8;
+//gchar *array;
+gsize length;
+GError *err = NULL;
+gsize *g_bytes_read = NULL; 
+gsize *g_bytes_written = NULL;
 
 int sockfd, portno, yes;
 ssize_t bytes_read, bytes_written; 
@@ -71,7 +78,7 @@ server = gethostbyname(argv[1]);
 	exit(EXIT_FAILURE);
 	}
 
-portno = atoi(argv[2]); //Grabbing the port number from the command line
+portno = atoi(argv[2]);
 serv_addr.sin_family = AF_INET; 
 memcpy(&serv_addr.sin_addr.s_addr, server->h_addr, server->h_length); 
 serv_addr.sin_port = htons(portno);
@@ -100,11 +107,6 @@ table = gtk_table_new(10, 10, TRUE);
 gtk_container_add(GTK_CONTAINER(window), table);
 gtk_widget_show(table);
 
-//-----------------------------------------------------------------------------------------------
-
-
-
-//-----------------------------------------------------------------------------------------------
 menubar = gtk_menu_bar_new();
 gtk_table_attach_defaults(GTK_TABLE(table), menubar, 0, 10, 0, 1);
 gtk_widget_show(menubar);
@@ -140,13 +142,11 @@ view2 = gtk_text_view_new();
 buffer = gtk_text_view_get_buffer(GTK_TEXT_VIEW(view2));
 gtk_widget_show(view2);
 
-
-
-//g_object_set_data (context_object, "view2", view2);
-
-//--------------------------------------------------------------------------------------------
-
-//--------------------------------------------------------------------------------------------
+utf8 = g_convert((const gchar *)buffer, length, "us-ascii", "UTF-8", g_bytes_read, g_bytes_written, &err);
+     if(err != NULL) {
+     printf("G_CONVERT(!NULL) error --> %s \n", strerror(errno));
+     g_error_free(err);
+     }
 
 scrolledwindow2 = gtk_scrolled_window_new(NULL, NULL);
 gtk_scrolled_window_set_shadow_type(GTK_SCROLLED_WINDOW(scrolledwindow2), GTK_SHADOW_OUT);
@@ -156,7 +156,7 @@ gtk_widget_show(scrolledwindow2);
 
 g_signal_connect_swapped(G_OBJECT(quit), "activate", G_CALLBACK(gtk_main_quit), NULL);
 
-g_signal_connect(G_OBJECT(button), "button_press_event", G_CALLBACK(callback), (gpointer)buffer);
+g_signal_connect(G_OBJECT(button), "button_press_event", G_CALLBACK(callback), (gpointer)utf8);
 
 //g_signal_connect(G_OBJECT(button), "clicked", G_CALLBACK(send), context_object);
 
