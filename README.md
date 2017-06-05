@@ -12,4 +12,5 @@ Needs more functionality. Most importantly, it needs to take the data in the tex
 
 Any ideas, feel free to add. 
 
-
+EDIT:
+THis is an entry as of June 5th 2017. I added the ability to send the typed text into the main view which is on the top. This is done once you press the send button and the typed text is also deleted upon sending as well.
