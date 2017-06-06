@@ -23,8 +23,6 @@
 
 > In order to successfully compile a C programming GTK2 application on Linux you must append the following to the end of your GCC command line compilation args: **\`pkg-config --cflags --libs gtk+-2.0\`**
 
-**Example compilation(With the assumption that the file is named gtk_client.c):**
-
 | **Exmaple compilation (With the assumption that the file is named gtk_client.c)       |
 | ------------------------- |
 | [anthony@ghost nix-chat-ui]$ gcc gtk_client.c -o gtk_client \`pkg-config --cflags --libs gtk+-2.0\` |
