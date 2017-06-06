@@ -6,10 +6,13 @@
 #include <unistd.h>
 #include <errno.h>
 #include <netdb.h>
+#include <pthread.h>
 #include <netinet/in.h>
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <arpa/inet.h>
+
+#define BUFF_SIZE 4096
 
 static void destroy_event(GtkWidget *widget, gpointer data) {
   gtk_main_quit();
@@ -38,21 +41,15 @@ int main(int argc, char *argv[]) {
   GtkTextBuffer *main_buffer, *buffer;
   GtkTextIter main_start, main_end, start, end, iter;
 
-  //GdkColor color;
-
-  gchar *utf8;
   gchar *text;
-  //gchar *array;
   gsize length;
   GError *err = NULL;
-  gsize *g_bytes_read = NULL; 
-  gsize *g_bytes_written = NULL;
 
   int sockfd, portno, yes;
   ssize_t bytes_read, bytes_written; 
+
   struct hostent *server; 
-  struct sockaddr_in serv_addr/*, cli_addr*/;
-  //char buffer[4096];
+  struct sockaddr_in serv_addr, cli_addr;
 
 	if(argc < 3) {
 	  fprintf(stderr, "Ussage: %s + IP Address + port No.\n", argv[0]);
@@ -113,6 +110,24 @@ int main(int argc, char *argv[]) {
     gtk_text_buffer_get_bounds(buffer, &start, &end);
     gtk_text_buffer_delete(buffer, &start, &end);
 
+    char buffer[BUFF_SIZE];
+    strncpy(buffer, text, strlen(text));
+    ssize_t bytes_written = write(sockfd, buffer, strlen(buffer));
+
+    if(bytes_written < 0) {
+      printf("WRITE(-1) error ---> %s.\n", strerror(errno));
+    }
+
+    if(bytes_written == 0) {
+      //printf("WRITE(0) error ---> %s.\n", strerror(errno));
+      printf("Nothing was written.\n");
+    }
+
+    if(bytes_written) {
+      printf("WRITE was successful.\n");
+    }
+
+
   }
 
   window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
@@ -165,31 +180,31 @@ int main(int argc, char *argv[]) {
   gtk_table_attach_defaults(GTK_TABLE(table), scrolledwindow2, 1, 8, 9, 10);
   gtk_widget_show(scrolledwindow2);
 
-  int send() {
+  //for( ; ; ) {
+
+    /*char buffer[4096];
+    //printf("Message: ");
+    fgets(buffer, sizeof(buffer), stdin);
+    printf("message: %s: ", buffer);
+    ssize_t bytes_written = write(sockfd, buffer, strlen(buffer));
+
+    if(bytes_written < 0) {
+      printf("WRITE(-1) error ---> %s.\n", strerror(errno));
+    }
+
+    if(bytes_written == 0) {
+      //printf("WRITE(0) error ---> %s.\n", strerror(errno));
+      printf("Nothing was written.\n");
+    }
+
+    if(bytes_written) {
+      printf("WRITE was successful.\n");
+    }*/
+
+  int read() {
     for( ; ; ) {
-
-      char buffer[4096];
-      //printf("Message: ");
-      fgets(buffer, sizeof(buffer), stdin);
-      printf("message: %s: ", buffer);
-      ssize_t bytes_written = write(sockfd, buffer, strlen(buffer));
-
-      if(bytes_written < 0) {
-        printf("WRITE(-1) error ---> %s.\n", strerror(errno));
-      }
-
-      if(bytes_written == 0) {
-        //printf("WRITE(0) error ---> %s.\n", strerror(errno));
-        printf("Nothing was written.\n");
-      }
-
-      if(bytes_written) {
-        printf("WRITE was successful.\n");
-      }
-
       ssize_t bytes_read = read(sockfd, buffer, sizeof(buffer));
       if(bytes_read < 0) {
-        //fprintf(stderr, "Error reading message from %s\n", inet_ntoa(cli_addr.sin_addr));
         printf("READ(-1) error ---> %s.\n", strerror(errno));
         exit(EXIT_FAILURE);
       }
@@ -202,7 +217,7 @@ int main(int argc, char *argv[]) {
         printf("server: %s", buffer);
       }
     }
-
+    return 0;
   }
 
   g_signal_connect_swapped(G_OBJECT(quit), "activate", G_CALLBACK(gtk_main_quit), NULL);
@@ -214,7 +229,7 @@ int main(int argc, char *argv[]) {
   g_signal_connect_swapped(G_OBJECT(window), "destroy-event", G_CALLBACK(destroy_event), NULL);
 
   g_signal_connect_swapped(G_OBJECT(window), "delete-event", G_CALLBACK(delete_event), NULL);
-
+ 
   gtk_main();
 
   return 0;
