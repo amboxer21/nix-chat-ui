@@ -7,7 +7,7 @@
 
 **Briefing**
 
-`You must first run the server and this is done from the command line at the moment. You can either use the fully functional synchronous server or the select server which could potentially have bugs or might not work the way you need it to. Then you can run the GTK client after the server is up and running.`
+> You must first run the server and this is done from the command line at the moment. You can either use the fully functional synchronous server or the select server which could potentially have bugs or might not work the way you need it to. Then you can run the GTK client after the server is up and running.
 
 **Examples:**
 
