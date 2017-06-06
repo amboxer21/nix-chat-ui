@@ -23,7 +23,8 @@
 `to the end of your gcc compilation.`
 
 <br><br/>
-## [**As of Sunday August 5th 2012**]
+## [**Changes**]
+**As of Sunday August 5th 2012**
 - The select server
   Recieves data from the client the first time around and sends it out to all clients connected. Then after, it does nothing. In turn, the client produces a bad file descriptor error on the third time around. Indicating the server is closing the FD somewhere.
 
@@ -31,7 +32,7 @@
   Needs more functionality. Most importantly, it needs to take the data in the text entry buffer and send it to the server. I am unsure at this moment of the exact steps that need to be taken in order to achieve this. I assume I would need to convert the standard GTK UTF-8 to binary. Also, the client must display sent, as well as recieved, data in the top textview/scrollable window.  
   
 <br><br/>
-## [**As of Tuesday June 6th 2017**]
+**As of Tuesday June 6th 2017** 
 - I added the ability to send the typed text into the main view which is on the top. This is done once you press the send button and the typed text is also deleted upon sending as well.
 - I added the ability to read incoming data from a socket on the main UI with threads. 
 <br><br/>
