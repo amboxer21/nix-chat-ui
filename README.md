@@ -3,10 +3,14 @@
 > This is a GTK2 chat client with a select server used to handle the data. The server is written in the C programming language as well as the rest of the code in this repo. It is LAN based chat at this point in time and all development has been done on Linux with no thought of MS Windows in mind. 
 
 ---
-
+<br><br/>
 [**How do I run this program?**]
 
-`You must first run the server. You can either use the fully functional synchronous server or the select server which could potentially have bugs. Then you can run the GTK client after the server is up and running.`
+---
+## Brief introduction
+---
+
+`You must first run the server and this is done from the command line at the moment. You can either use the fully functional synchronous server or the select server which could potentially have bugs. Then you can run the GTK client after the server is up and running.`
 
 | Program       | IP Address    | Port  |
 | ------------- |:-------------:| -----:|
