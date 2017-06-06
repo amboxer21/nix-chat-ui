@@ -22,6 +22,9 @@
 **\`pkg-config --cflags --libs gtk+-2.0\`**
 `to the end of your gcc compilation.`
 
+**Example compilation**
+[anthony@ghost nix-chat-ui]$ gcc gtk_client.c -o gtk_client \`pkg-config --cflags --libs gtk+-2.0\`
+
 <br><br/>
 ## [**Changes**]
 **As of Sunday August 5th 2012**
