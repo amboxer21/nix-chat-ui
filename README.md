@@ -4,7 +4,7 @@
 
   I have written a basic synchronous server to test the chat with which is included with the repo.
 
-[**As of Sunday Aug 5th**]
+[**As of Sunday August 5th 2012**]
 - The select server
   Recieves data from the client the first time around and sends it out to all clients connected. Then after, it does nothing. In turn, the client produces a bad file descriptor error on the third time around. Indicating the server is closing the FD somewhere.
 
