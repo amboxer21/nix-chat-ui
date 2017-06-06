@@ -5,9 +5,11 @@
 
 ## [**How do I run this program?**]
 
-**Brief introduction**
+**Briefing**
 
 `You must first run the server and this is done from the command line at the moment. You can either use the fully functional synchronous server or the select server which could potentially have bugs. Then you can run the GTK client after the server is up and running.`
+
+**Examples**
 
 | Program       | IP Address    | Port  |
 | ------------- |:-------------:| -----:|
