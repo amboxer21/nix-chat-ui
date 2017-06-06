@@ -10,7 +10,7 @@
 #include <arpa/inet.h>
 
 int main(int argc, char *argv[]) {
-  fd_set master, read_fds;;
+  fd_set master, read_fds;
 
   struct sockaddr_in serv_addr, cli_addr;
   struct hostent *server;
@@ -149,7 +149,6 @@ int main(int argc, char *argv[]) {
 	  		    }
 
 	  		  }
-
 	  	  }
 	    }
     }

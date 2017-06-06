@@ -141,7 +141,8 @@ int main(int argc, char *argv[]) {
 
 	  printf("Client: %s\n", buffer);
 
-    const char message[] = "Message recieved.\n";
+    const char message[] = "\n";
+    //const char message[] = "Message recieved.\n";
     ssize_t bytes_written = send(newsockfd, message, strlen(message), 0);
 	  if(bytes_written < 0) {
 	    printf("SEND(-1) error --> %s.\n", strerror(errno));

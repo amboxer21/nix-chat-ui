@@ -25,17 +25,18 @@ static gboolean delete_event(GtkWidget *widget, GdkEvent *event, gpointer data) 
 
 //To compile append `pkg-config --cflags --libs gtk+-2.0`
 int main(int argc, char *argv[]) {
-  GtkWidget *window;
-  GtkWidget *table;
+
   GtkWidget *view;
-  GtkWidget *view2;
   GtkWidget *file;
   GtkWidget *quit;
+  GtkWidget *table;
+  GtkWidget *view2;
+  GtkWidget *window;
   GtkWidget *button;
-  GtkWidget *scrolledwindow;
-  GtkWidget *scrolledwindow2;
   GtkWidget *menubar;
   GtkWidget *filemenu;
+  GtkWidget *scrolledwindow;
+  GtkWidget *scrolledwindow2;
 
   GtkTextMark *mark;
   GtkTextBuffer *main_buffer, *buffer;
@@ -43,9 +44,11 @@ int main(int argc, char *argv[]) {
 
   gchar *text;
   gsize length;
+  pthread_t r_thread;
   GError *err = NULL;
 
   int sockfd, portno, yes;
+  char read_buffer[BUFF_SIZE];
   ssize_t bytes_read, bytes_written; 
 
   struct hostent *server; 
@@ -90,6 +93,32 @@ int main(int argc, char *argv[]) {
 		printf("Made a connection to %s\n", inet_ntoa(serv_addr.sin_addr)); 
 	}
 
+  void *read_thread(void *args) {
+
+    for( ; ; ) {
+      //gdk_threads_enter();
+      ssize_t bytes_read = read(sockfd, read_buffer, sizeof(read_buffer));
+      if(bytes_read < 0) {
+        gdk_threads_enter();
+        printf("READ(-1) error ---> %s.\n", strerror(errno));
+        exit(EXIT_FAILURE);
+      }
+
+      //Test to see if the buffer is blank.
+      if(bytes_read == 0) {
+        gdk_threads_enter();
+        printf("READ(0) error ---> %s.\n", strerror(errno));
+      }
+      else {
+        gdk_threads_enter();
+        //printf("%s", read_buffer);
+      }
+
+      gdk_threads_leave();
+
+    }
+  }
+
   gtk_init(&argc, &argv);
 
   void callback(GtkWidget *widget, gpointer data) {
@@ -102,6 +131,7 @@ int main(int argc, char *argv[]) {
 
     // Insert the typed text into main view once it's sent
     gtk_text_buffer_get_start_iter(main_buffer, &iter);
+    gtk_text_buffer_insert(main_buffer, &iter, "Me: ", -1);
     gtk_text_buffer_insert(main_buffer, &iter, text, -1);
     gtk_text_buffer_insert(main_buffer, &iter, "\n", -1);
 
@@ -124,9 +154,10 @@ int main(int argc, char *argv[]) {
     }
 
     if(bytes_written) {
-      printf("WRITE was successful.\n");
+      //printf("WRITE was successful.\n");
     }
 
+    pthread_create(&r_thread, NULL, read_thread, (void *)NULL);
 
   }
 
@@ -203,7 +234,7 @@ int main(int argc, char *argv[]) {
 
   int read() {
     for( ; ; ) {
-      ssize_t bytes_read = read(sockfd, buffer, sizeof(buffer));
+      ssize_t bytes_read = read(sockfd, read_buffer, sizeof(read_buffer));
       if(bytes_read < 0) {
         printf("READ(-1) error ---> %s.\n", strerror(errno));
         exit(EXIT_FAILURE);
@@ -214,7 +245,7 @@ int main(int argc, char *argv[]) {
         printf("READ(0) error ---> %s.\n", strerror(errno));
       }
       else {
-        printf("server: %s", buffer);
+        printf("server: %s", read_buffer);
       }
     }
     return 0;
@@ -229,8 +260,12 @@ int main(int argc, char *argv[]) {
   g_signal_connect_swapped(G_OBJECT(window), "destroy-event", G_CALLBACK(destroy_event), NULL);
 
   g_signal_connect_swapped(G_OBJECT(window), "delete-event", G_CALLBACK(delete_event), NULL);
+
+  //pthread_create(&r_thread, NULL, read_thread, (void *)NULL);
  
+  gdk_threads_enter();
   gtk_main();
+  gdk_threads_leave();
 
   return 0;
 }
