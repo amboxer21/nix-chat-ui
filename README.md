@@ -2,6 +2,17 @@
 
 > This is a GTK2 chat client with a select server used to handle the data. The server is written in the C programming language as well as the rest of the code in this repo. It is LAN based chat at this point in time and all development has been done on Linux with no thought of MS Windows in mind. 
 
+---
+
+[**How do I run this program?**]
+
+`You must first run the server. You can either use the fully functional synchronous server or the select server which could potentially have bugs. Then you can run the GTK client after the server is up and running.`
+
+| Program       | IP Address    | Port  |
+| ------------- |:-------------:| -----:|
+| ./server      | 127.0.01      | 1234  |
+| ./gtk_client  | 127.0.0.1     | 1234  |
+
 [**As of Sunday August 5th 2012**]
 - The select server
   Recieves data from the client the first time around and sends it out to all clients connected. Then after, it does nothing. In turn, the client produces a bad file descriptor error on the third time around. Indicating the server is closing the FD somewhere.
