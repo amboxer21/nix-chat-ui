@@ -1,6 +1,6 @@
 [**Description**]
 
-> This is a GTK2 chat client with a select server used to handle the data. The server is written in the C programming language as well as the rest of the code in this repo. It is LAN based chat at this point in time and all development has been done on *Linux with no thought of MS Windows in mind. 
+> This is a GTK2 chat client with a select server used to handle the data. The server is written in the C programming language as well as the rest of the code in this repo. It is LAN based chat at this point in time and all development has been done on Linux with no thought of MS Windows in mind. 
 
 [**As of Sunday August 5th 2012**]
 - The select server
