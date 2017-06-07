@@ -47,7 +47,7 @@
 
 ![alt text][logo]
 
-[logo]: https://github.com/amboxer21/nix-chat-ui/blob/master/gtk_client.png "Main UI"
+[logo]: https://github.com/amboxer21/nix-chat-ui/tree/master/pics/gtk_client.png "Main UI"
 
 <br><br/>
 <br><br/>
