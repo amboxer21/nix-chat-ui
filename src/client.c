@@ -9,6 +9,8 @@
 #include <arpa/inet.h>
 #include <errno.h>
 
+#define BUFFER_SIZE 4096
+
 int main(int argc, char *argv[]) {  
 
   struct hostent *server; 
@@ -82,7 +84,7 @@ int main(int argc, char *argv[]) {
   }
 
   for( ; ; ) {
-    char buffer[BUFF_SIZE];
+    char buffer[BUFFER_SIZE];
 
     printf("Message: ");
     fgets(buffer, sizeof(buffer), stdin);
