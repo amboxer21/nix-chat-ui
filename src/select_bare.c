@@ -9,6 +9,8 @@
 #include <netinet/in.h>
 #include <arpa/inet.h>
 
+#define BUFFER_SIZE 4096
+
 int main(int argc, char *argv[]) {
   fd_set master, read_fds;
 
@@ -80,7 +82,8 @@ int main(int argc, char *argv[]) {
 
   for( ; ; ) {
     read_fds = master;
-    char buffer[4096];
+    char buffer[BUFFER_SIZE];
+    const char newline[] = "\n";
 
     int selector = select(fdmax+1, &read_fds, NULL, NULL, NULL);
 	  if(selector < 0) {
@@ -132,13 +135,12 @@ int main(int argc, char *argv[]) {
 	  	    }
 
 	  		  else if(bytes_read) {
-            char temp[1024];
-            stpncpy(temp,(char *)"\n",strlen(temp));
+            const char newline[] = "\n";
 	  		    printf("Recieve was successful.\n");
             if(strncmp(buffer,"display",7) == 0) {
               printf("=> Password accepted: %s",buffer);
             }
-	  		    ssize_t bytes_written = send(i, temp, 1, 0);
+	  		    ssize_t bytes_written = send(i, newline, 1, 0);
 	  		    if(bytes_written < 0) {
 	  		      printf("WRITE(-1) error ---> %s.\n", strerror(errno));
 	  		    }
@@ -149,8 +151,7 @@ int main(int argc, char *argv[]) {
 
 	  		    if(bytes_written) {
 			        printf("Send was successful.\n");
-	  		        memset(buffer, '\0', strlen(buffer));
-	  		        memset(temp, '\0', strlen(temp));
+	  		        memset(buffer, '\0', sizeof(buffer));
 	  		    }
 
 	  		  }
