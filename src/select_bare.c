@@ -12,18 +12,19 @@
 #define BUFFER_SIZE 4096
 
 int main(int argc, char *argv[]) {
+
   fd_set master, read_fds;
 
-  struct sockaddr_in serv_addr, cli_addr;
   struct hostent *server;
+  struct in_addr* ip_address;
+  struct sockaddr_in serv_addr, cli_addr;
+
   int fdmax, i;
   FD_ZERO(&master);
   FD_ZERO(&read_fds);
 
-	if(argc < 3) {
-	  printf("USAGE: %s + IP Address + Port No.\n", argv[0]);
-	  exit(EXIT_FAILURE);
-	}
+  server = gethostbyname("0.0.0.0");
+  ip_address = (struct in_addr*)server->h_addr_list[0];
 
   int sockfd = socket(AF_INET, SOCK_STREAM, 0);
 	if(sockfd < 0) {
@@ -38,26 +39,10 @@ int main(int argc, char *argv[]) {
 	  exit(EXIT_FAILURE);
 	}
 
-  server = gethostbyname(argv[1]); 
-	if(server == NULL) {
-	  printf("GETHOSTBYNAME(NULL) error --> %s.\n", strerror(errno));
-	  exit(EXIT_FAILURE);
-	}
-
-  int portno = atoi(argv[2]);
-	if(portno < 0) {
-	  printf("ATOI(-1) error --> %s.\n", strerror(errno));
-	  exit(EXIT_FAILURE);
-	}
-
-	if(portno == 0) {
-	  printf("ATOI(0) - DEBUG MSG --> %s.\n", strerror(errno));
-	}
-
   serv_addr.sin_family = AF_INET;
-  serv_addr.sin_addr.s_addr = htonl(INADDR_ANY);
+  serv_addr.sin_addr.s_addr = ip_address->s_addr;
   //memcpy(&serv_addr.sin_addr.s_addr, server->h_addr, server->h_length);
-  serv_addr.sin_port = htons(portno);
+  serv_addr.sin_port = htons(3345);
   memset(&(serv_addr.sin_zero), '\0', 8);
 
   //Bind() returns zero upon success.
