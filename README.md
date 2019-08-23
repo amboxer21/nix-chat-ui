@@ -16,6 +16,11 @@
 | ./server      | 127.0.01      | 1234  |
 | ./gtk_client  | 127.0.0.1     | 1234  |
 
+## [**Installing the system libs**]
+>For Debian only
+
+    sudo apt install libgtk2.0-dev
+
 <br><br/>
 ## [**How to compile the GTK application**]
 
